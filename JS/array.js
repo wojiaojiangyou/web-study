@@ -85,6 +85,26 @@ Array.prototype.myFilter = function (callback) {
   return arr
 }
 
+/**
+ * 函数柯里化实现：bind
+ * 主要为了解决固定某一个参数的场景 避免重复传入参数
+ */
+Array.prototype.myBind = function (instance) {
+  // 判定当前调用的bind方法必须是个函数 否则无法调用
+  if (typeof this !== 'function') {
+    throw new Error('only use function object method')
+  }
+  const _this = this
+  const _args = [].slice(arguments, 1)
+
+  return function () {
+    // 拼接bind参数和返回后函数调用的参数
+    const curArgs = _args.concat([].slice(arguments))
+    // 更改调用this
+    _this.apply(instance, curArgs)
+  }
+}
+
 arr.myForEach((val) => {
   console.log('[forEach] val', val)
 })
@@ -96,3 +116,18 @@ console.log('[reduce] val', routes.myReduce((prev, cur) => {
 
 console.log('[map] val', arr.myMap((val) => val * 2))
 console.log('[filter] val', arr.myFilter(item => item % 2 !== 0))
+
+
+const obj = {
+  key: 'name',
+  print (val) {
+    console.log('[bind] print:', val)
+  }
+}
+
+function printObject (val) {
+  this.print(this.key + ':' + val)
+}
+
+const bindFunc = printObject.bind(obj)
+bindFunc('zhangsan')
