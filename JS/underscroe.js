@@ -19,6 +19,27 @@
     return funResult
   }
 
+  // 浅拷贝
+  _.clone = function (obj) {
+    if (typeof obj !== 'object') return obj
+    return Array.isArray(obj) ? obj.slice(0) : Object.assign({}, obj)
+  } 
+
+  // 深拷贝
+  _.deepClone = function (obj) {
+    if (Array.isArray(obj)) {
+      return obj.map(val => typeof val === 'object' ? _.deepClone(val) : val)
+    } else if (typeof obj === 'object') {
+      return Object.keys(obj).reduce((pre, key) => {
+        const val = obj[key]
+        pre[key] = typeof val === 'object' ? _.deepClone(val) : val
+        return pre
+      }, {})
+    } else {
+      return obj
+    }
+  }
+
   // 去重
   _.unique = function (arr, callback) {
     let result = []
