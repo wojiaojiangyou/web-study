@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promise</title>
+  <script src="../JS/promise.js"></script>
+</head>
+<body>
+  <h2>hello promise</h2>
+  <script>
+    const cont = Container({
+      enableStopMonitor: false,
+      enabelOnceExec: true
+    })
+    const print = function (val, initVal) {
+      console.log('[print] val', val, '[init] val', initVal)
+    }
+
+    // 调用方式
+    cont.add(print.bind(this, 1))
+    cont.add(print.bind(this, 2), print.bind(this, 3))
+    // cont.add(() => {
+    //   console.log('------stop-------')
+    //   return false
+    // })
+    cont.add([print.bind(this, 4), print.bind(this, 5)])
+    cont.add(() => console.log('------end-------'))
+
+    cont.start('Hello')
+    cont.start('world')
+
+    // 自定义Promise调用
+    new MyPromise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('delay hello')
+      }, 1000)
+
+      // resolve('first data ->')
+    }).then(res => {
+      // console.log('[promise] first val:', res)
+      return new MyPromise((resolve, reject) => {
+        resolve(`${res} -> world !`)
+      })
+    }).then(res => {
+      console.log('[promise] second val:', res)
+    })
+  </script>
+</body>
+</html>
