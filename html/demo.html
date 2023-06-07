@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../JS//limit.js"></script>
+</head>
+<body>
+  <script>
+    function menuItem (word, color) {
+      this.word = word
+      this.color = color
+      this.dom = document.createElement('div')
+      this.initDom()
+      this.bind()
+    }
+
+    menuItem.prototype.initDom = function () {
+      this.dom.innerHTML = this.word
+      document.body.appendChild(this.dom)
+    }
+
+    menuItem.prototype.bind = function () {
+      const self = this
+      this.dom.addEventListener('mouseover', function () {
+        this.style.backgroundColor = self.color.overColor
+      })
+      this.dom.addEventListener('mouseleave', function () {
+        this.style.backgroundColor = self.color.moveColor
+      })
+    }
+
+    function menuOver (overColor, moveColor) {
+      this.overColor = overColor
+      this.moveColor = moveColor
+    }
+
+    const btns = [
+      ['test1', ['red', 'pink']],
+      ['test2', ['yellow', 'green']]
+    ]
+
+    for (let i = 0; i < btns.length; i++) {
+      const item = btns[i]
+      new menuItem(item[0], new menuOver(item[1][0], item[1][1]))
+    }
+  </script>
+</body>
+</html>
